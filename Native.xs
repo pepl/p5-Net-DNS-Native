@@ -706,7 +706,10 @@ DESTROY(Net_DNS_Native *self)
             
             for (i=0, l=bstree_size(self->fd_map); i<l; i++) {
                 DNS_result *res = bstree_get(self->fd_map, fds[i]);
-                
+                if ( res == NULL ) {
+                    break;
+                }
+
                 if (!res->dequeued) {
                     if (!res->gai_error && res->hostinfo) freeaddrinfo(res->hostinfo);
                     if (res->arg->hints)   free(res->arg->hints);
